@@ -1,4 +1,3 @@
-# go WC = 0  3 = 1  walk = 2  run = 3 occupied = 4   walk and run = 5  eating = 6  driving = 7
 import json
 import keras
 import numpy as np
@@ -20,22 +19,22 @@ print( np.unique(y))
 print(data[pd.to_numeric(data['Activity'], errors='coerce').isnull()])
 
 model = Sequential()
-model.add(Dense(512, input_shape=(7,), activation='relu'))
+model.add(Dense(512, input_shape=(7,), activation='tanh'))
 model.add(Dropout(0.7))
 
-model.add(Dense(512, activation='relu'))
+model.add(Dense(512, activation='tanh'))
 model.add(Dropout(0.7))
 
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.7))
+# model.add(Dense(512, activation='r'))
+# model.add(Dropout(0.7))
 
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.7))
+# model.add(Dense(512, activation='relu'))
+# model.add(Dropout(0.7))
 
-model.add(Dense(512, activation='relu'))
-model.add(Dropout(0.7))
+# model.add(Dense(512, activation='relu'))
+# model.add(Dropout(0.7))
 
-model.add(Dense(2, activation='softmax'))
+model.add(Dense(7, activation='softmax'))
 
 model.compile(loss='sparse_categorical_crossentropy',
               optimizer='adam',
@@ -48,7 +47,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(x, y, test_size=0.20, random
 # Fit the model
 hist = model.fit(X_train, Y_train, validation_split=0.20, epochs=25, batch_size=32, callbacks=callbacks_list, verbose=1)
 # Evaluate the model
-loss, accuracy = model.evaluate(X, Y, verbose=0)
+loss, accuracy = model.evaluate(X_train, Y_train, verbose=0)
 print('Accuracy: %f' % (accuracy * 100))
 print('***** TOTAL TRAINING SET AMOUNT', X_train.shape, Y_train.shape)
 print('***** TEST', X_test.shape, Y_test.shape)
